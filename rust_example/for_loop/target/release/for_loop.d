@@ -1,1 +1,0 @@
-/Users/dixietech/Documents/Full\ Stack\ Web\ Development\ Class/2024-02-21/rust/for_loop/target/release/for_loop: /Users/dixietech/Documents/Full\ Stack\ Web\ Development\ Class/2024-02-21/rust/for_loop/src/main.rs
