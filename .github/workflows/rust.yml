@@ -1,0 +1,29 @@
+name: Rust
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Change to Rust project directory
+      run: cd rust_example/for_loop/
+      
+    - name: Build with Cargo
+      run: cargo build --release --verbose
+
+    - name: Zip MacOS Build
+      run: zip -j target/release/for_loop.zip target/release/for_loop
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: for_loop.zip
+        path: target/release/for_loop.zip
