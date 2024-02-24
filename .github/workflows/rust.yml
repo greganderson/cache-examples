@@ -33,8 +33,7 @@ jobs:
     - uses: actions/upload-artifact@v4
       with:
         name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
-        path: target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
-        working-directory: rust_example/for_loop/
+        path: rust_example/for_loop/target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
 
   create-release:
     needs: [build-macos]
