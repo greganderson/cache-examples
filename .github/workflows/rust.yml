@@ -49,7 +49,7 @@ jobs:
       - name: Download MacOS Artifact
         uses: actions/download-artifact@v4
         with:
-          path: target/release
+          path: rust_example/for_loop/target/release
 
       - name: Create Release
         id: create_release
