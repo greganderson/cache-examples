@@ -34,6 +34,7 @@ jobs:
       with:
         name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
         path: rust_example/for_loop/target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+  
 
   create-release:
     needs: [build-macos]
