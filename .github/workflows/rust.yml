@@ -27,7 +27,7 @@ jobs:
       working-directory: rust_example/for_loop/
 
     - name: Zip MacOS Build
-      run: zip -j rust_example/for_loop/target/release/for_loop-${{ env.VERSION_ID }}.zip rust_example/for_loop/target/release/for_loop
+      run: zip -j rust_example/for_loop/target/release/for_loop.zip rust_example/for_loop/target/release/for_loop
 
     - uses: actions/upload-artifact@v4
       with:
