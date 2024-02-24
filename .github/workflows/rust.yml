@@ -24,14 +24,17 @@ jobs:
       
     - name: Build with Cargo
       run: cargo build --release --verbose
+      working-directory: rust_example/for_loop/
 
     - name: Zip MacOS Build
       run: zip -j target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip target/release/for_loop
+      working-directory: rust_example/for_loop/
 
     - uses: actions/upload-artifact@v4
       with:
         name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
         path: target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+        working-directory: rust_example/for_loop/
 
   create-release:
     needs: [build-macos]
