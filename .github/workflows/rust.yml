@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  VERSION_ID: '1.0.0'
 
 jobs:
   build-macos:
@@ -16,14 +17,54 @@ jobs:
     - uses: actions/checkout@v4
     - name: Change to Rust project directory
       run: cd rust_example/for_loop/
+
+    - name: Generate unique version ID
+      id: version_id
+      run: echo "COMBINED_VERSION_ID=${{ env.VERSION_ID }}-$(date +'%Y-%m-%d_%H:%M:%S')" >> $GITHUB_ENV
       
     - name: Build with Cargo
       run: cargo build --release --verbose
 
     - name: Zip MacOS Build
-      run: zip -j target/release/for_loop.zip target/release/for_loop
+      run: zip -j target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip target/release/for_loop
 
     - uses: actions/upload-artifact@v4
       with:
-        name: for_loop.zip
-        path: target/release/for_loop.zip
+        name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+        path: target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+
+  create-release:
+    needs: [build-macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download MacOS Artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: target/release
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ env.COMBINED_VERSION_ID }}
+          release_name: Release v${{ env.COMBINED_VERSION_ID }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset (macos)
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+          asset_name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+          asset_content_type: application/zip
