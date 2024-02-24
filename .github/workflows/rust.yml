@@ -27,12 +27,12 @@ jobs:
       working-directory: rust_example/for_loop/
 
     - name: Zip MacOS Build
-      run: zip -j rust_example/for_loop/target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip rust_example/for_loop/target/release/for_loop
+      run: zip -j rust_example/for_loop/target/release/for_loop.zip rust_example/for_loop/target/release/for_loop
 
     - uses: actions/upload-artifact@v4
       with:
-        name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip 
-        path: rust_example/for_loop/target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip   
+        name: for_loop.zip 
+        path: rust_example/for_loop/target/release/for_loop.zip   
 
     - name: Set COMBINED_VERSION_ID as output
       id: set_output
@@ -51,7 +51,9 @@ jobs:
       - name: Download MacOS Artifact
         uses: actions/download-artifact@v4
         with:
+          name: for_loop.zip
           path: rust_example/for_loop/target/release
+
 
       - name: Create Release
         id: create_release
@@ -70,6 +72,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: rust_example/for_loop/target/release           
-          asset_name: for_loop-${{ needs.build-macos.outputs.combined_version_id }}.zip           
+          asset_path: rust_example/for_loop/target/release/for_loop.zip           
+          asset_name: for_loop.zip
           asset_content_type: application/zip
