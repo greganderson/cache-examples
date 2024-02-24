@@ -27,13 +27,13 @@ jobs:
       working-directory: rust_example/for_loop/
 
     - name: Zip MacOS Build
-      run: zip -j target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip target/release/for_loop
+      run: zip -j target/release/for_loop-${{ env.VERSION_ID }}.zip target/release/for_loop
       working-directory: rust_example/for_loop/
 
     - uses: actions/upload-artifact@v4
       with:
-        name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
-        path: rust_example/for_loop/target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+        name: for_loop-${{ env.VERSION_ID }}.zip
+        path: rust_example/for_loop/target/release/for_loop-${{ env.VERSION_ID }}.zip
   
 
   create-release:
@@ -57,8 +57,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ env.COMBINED_VERSION_ID }}
-          release_name: Release v${{ env.COMBINED_VERSION_ID }}
+          tag_name: v${{ env.VERSION_ID }}
+          release_name: Release v${{ env.VERSION_ID }}
           draft: false
           prerelease: false
 
@@ -68,6 +68,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: target/release/for_loop-${{ env.COMBINED_VERSION_ID }}.zip
-          asset_name: for_loop-${{ env.COMBINED_VERSION_ID }}.zip
+          asset_path: target/release/for_loop-${{ env.VERSION_ID }}.zip
+          asset_name: for_loop-${{ env.VERSION_ID }}.zip
           asset_content_type: application/zip
